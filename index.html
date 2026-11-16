@@ -128,6 +128,23 @@ h2.stitle .hl { color: var(--green); }
 .slide:target { visibility: visible !important; opacity: 1 !important; pointer-events: auto !important; z-index: 3 !important; }
 .noscript-bar { position: fixed; bottom: 12px; left: 50%; transform: translateX(-50%); z-index: 2000; background: #15445a; color: #fff; padding: 10px 18px; border-radius: 999px; font-family: 'IBM Plex Sans Arabic', sans-serif; font-size: 18px; direction: rtl; }
 .noscript-bar a { color: #fff; margin: 0 8px; text-decoration: none; font-weight: 700; }</style></noscript>
+
+<style>
+/* Responsive controls (2026-11-16): the bar wraps instead of overflowing on narrow screens */
+.deck-controls { max-width: calc(100vw - 24px); flex-wrap: wrap; justify-content: center; }
+.deck-controls .lbl-short { display: none; }
+@media (max-width: 700px) {
+  .deck-controls, .deck-controls.show { left: 12px; right: 12px; transform: none !important; bottom: 12px; border-radius: 24px; padding: 10px; gap: 8px; max-width: none; }
+  .deck-controls button { font-size: 15px; padding: 10px 12px; min-height: 44px; }
+  #prevBtn, #slideCounter, #nextBtn { order: 1; }
+  .deck-controls::after { content: ''; flex-basis: 100%; order: 2; height: 0; }
+  #prevBtn, #nextBtn { flex: 1 1 0; }
+  #slideCounter { flex: 0 0 auto; font-size: 15px; }
+  #cameraStatusBtn, #motionModeBtn, #fontToggleBtn { order: 3; flex: 1 1 0; font-size: 14px; padding: 8px 10px; min-height: 44px; }
+  .deck-controls .lbl-full { display: none; }
+  .deck-controls .lbl-short { display: inline; }
+}
+</style>
 </head>
 <body class="font-mode-plex">
 
@@ -136,9 +153,9 @@ h2.stitle .hl { color: var(--green); }
   <button id="prevBtn" type="button"><span>السابق</span></button>
   <span id="slideCounter" dir="ltr">01 / 08</span>
   <button id="nextBtn" type="button"><span>التالي</span></button>
-  <button id="cameraStatusBtn" type="button" onclick="deck.resetZoomOrStep()"><span id="cameraStatusLabel">الكاميرا: نظرة عامة</span></button>
-  <button id="motionModeBtn" type="button" onclick="deck.cycleMotionMode()"><span id="motionModeLabel">الحركة: Morph + Zoom بالأسهم</span></button>
-  <button id="fontToggleBtn" type="button" onclick="cycleFontMode()"><span id="fontModeLabel">الخط: IBM Plex Sans Arabic</span></button>
+  <button id="cameraStatusBtn" type="button" onclick="deck.resetZoomOrStep()"><span class="lbl-full" id="cameraStatusLabel">الكاميرا: نظرة عامة</span><span class="lbl-short" id="cameraStatusLabelShort">الكاميرا</span></button>
+  <button id="motionModeBtn" type="button" onclick="deck.cycleMotionMode()"><span class="lbl-full" id="motionModeLabel">الحركة: Morph + Zoom بالأسهم</span><span class="lbl-short" id="motionModeLabelShort">الحركة</span></button>
+  <button id="fontToggleBtn" type="button" onclick="cycleFontMode()"><span class="lbl-full" id="fontModeLabel">الخط: IBM Plex Sans Arabic</span><span class="lbl-short" id="fontModeLabelShort">الخط</span></button>
 </nav>
 <noscript><div class="noscript-bar">التنقل بدون جافاسكربت:
 <a href="#s1">1</a><a href="#s2">2</a><a href="#s3">3</a><a href="#s4">4</a><a href="#s5">5</a><a href="#s6">6</a><a href="#s7">7</a><a href="#s8">8</a>
@@ -477,6 +494,7 @@ h2.stitle .hl { color: var(--green); }
       document.body.classList.add(fontModes[currentFontMode].className);
     }
     document.getElementById('fontModeLabel').textContent = fontModes[currentFontMode].label;
+    var _fl = document.getElementById('fontModeLabelShort'); if (_fl) _fl.textContent = fontModes[currentFontMode].label.split(':')[0];
   }
   document.addEventListener('keydown', (e) => {
     if (e.altKey && (e.key === 'f' || e.key === 'F')) { e.preventDefault(); cycleFontMode(); }
@@ -603,6 +621,7 @@ h2.stitle .hl { color: var(--green); }
       };
       this.motionMode = order[(order.indexOf(this.motionMode) + 1) % order.length];
       if (this.motionModeEl) this.motionModeEl.textContent = labels[this.motionMode];
+      var _ml = document.getElementById('motionModeLabelShort'); if (_ml) _ml.textContent = labels[this.motionMode].split(':')[0];
       if (this.motionMode !== 'morph-and-zoom') this.zoomToIndex(-1);
     }
     resetZoomOrStep() {
