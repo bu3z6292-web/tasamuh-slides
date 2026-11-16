@@ -130,19 +130,15 @@ h2.stitle .hl { color: var(--green); }
 .noscript-bar a { color: #fff; margin: 0 8px; text-decoration: none; font-weight: 700; }</style></noscript>
 
 <style>
-/* Responsive controls (2026-11-16): the bar wraps instead of overflowing on narrow screens */
+/* Responsive controls (2026-11-16): nav-only bar — secondary buttons hidden per Osama 2026-11-16 */
 .deck-controls { max-width: calc(100vw - 24px); flex-wrap: wrap; justify-content: center; }
+#cameraStatusBtn, #motionModeBtn, #fontToggleBtn { display: none !important; }
 .deck-controls .lbl-short { display: none; }
 @media (max-width: 700px) {
   .deck-controls, .deck-controls.show { left: 12px; right: 12px; transform: none !important; bottom: 12px; border-radius: 24px; padding: 10px; gap: 8px; max-width: none; }
   .deck-controls button { font-size: 15px; padding: 10px 12px; min-height: 44px; }
-  #prevBtn, #slideCounter, #nextBtn { order: 1; }
-  .deck-controls::after { content: ''; flex-basis: 100%; order: 2; height: 0; }
   #prevBtn, #nextBtn { flex: 1 1 0; }
   #slideCounter { flex: 0 0 auto; font-size: 15px; }
-  #cameraStatusBtn, #motionModeBtn, #fontToggleBtn { order: 3; flex: 1 1 0; font-size: 14px; padding: 8px 10px; min-height: 44px; }
-  .deck-controls .lbl-full { display: none; }
-  .deck-controls .lbl-short { display: inline; }
 }
 </style>
 </head>
